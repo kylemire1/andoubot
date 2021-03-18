@@ -11,7 +11,7 @@ const io = require("socket.io")(http, {
   },
 });
 
-const clients = new tmi.Client({
+const client = new tmi.Client({
   options: { debug: true, messagesLogLevel: "info" },
   connection: {
     reconnect: true,
