@@ -1,11 +1,49 @@
-const http = require("http");
-const app = require("./app");
-const sockets = require("./sockets");
+require("dotenv").config();
+const tmi = require("tmi.js");
+const express = require("express");
+const app = express();
 
-const server = http.createServer(app);
-sockets(server);
+const PORT = process.env.PORT || 8080;
 
-const port = process.env.PORT || 5000;
-server.listen(port, () => {
-  console.log(`Listening: http://localhost:${port}`);
+const http = require("http").Server(app);
+const io = require("socket.io")(http, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
+
+const client = new tmi.Client({
+  options: { debug: true, messagesLogLevel: "info" },
+  connection: {
+    reconnect: true,
+    secure: true,
+  },
+  identity: {
+    username: process.env.TWITCH_BOT_USERNAME,
+    password: process.env.TWITCH_BOT_AUTH_TOKEN,
+  },
+  channels: [`${process.env.TWITCH_CHANNEL_NAME}`],
+});
+
+io.on("connection", (socket) => {
+  console.log("a user connected");
+
+  client.connect().catch(console.error);
+
+  client.on("message", (channel, tags, message, self) => {
+    if (self) return;
+    if (message.toLowerCase() === "!hello") {
+      client.say(channel, `@${tags.username}, heya!`);
+      io.emit("command", message);
+    }
+  });
+
+  socket.on("client-emit", (msg) => {
+    io.emit("chat-from-server", msg);
+  });
+});
+
+http.listen(PORT, () => {
+  console.log("listening on port " + PORT);
 });
