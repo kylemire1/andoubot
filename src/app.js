@@ -14,6 +14,12 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.json({
+    message: "🦄🌈✨👋🌎🌍🌏✨🌈🦄",
+  });
+});
+
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
 
