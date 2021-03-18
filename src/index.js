@@ -11,7 +11,7 @@ const io = require("socket.io")(http, {
   },
 });
 
-const client = new tmi.Client({
+const clients = new tmi.Client({
   options: { debug: true, messagesLogLevel: "info" },
   connection: {
     reconnect: true,
@@ -24,22 +24,18 @@ const client = new tmi.Client({
   channels: [`${process.env.TWITCH_CHANNEL_NAME}`],
 });
 
+client.connect().catch(console.error);
+
+client.on("message", (channel, tags, message, self) => {
+  if (self) return;
+  if (message.toLowerCase() === "!hello") {
+    client.say(channel, `@${tags.username}, heya!`);
+    io.emit("command", message);
+  }
+});
+
 io.on("connection", (socket) => {
   console.log("a user connected");
-
-  client.connect().catch(console.error);
-
-  client.on("message", (channel, tags, message, self) => {
-    if (self) return;
-    if (message.toLowerCase() === "!hello") {
-      client.say(channel, `@${tags.username}, heya!`);
-      io.emit("command", message);
-    }
-  });
-
-  socket.on("client-emit", (msg) => {
-    io.emit("chat-from-server", msg);
-  });
 });
 
 app.get("/", (req, res) => {
