@@ -1,5 +1,12 @@
 require("dotenv").config();
 const tmi = require("tmi.js");
+const doDiscord = require("./commands/doDiscord");
+const doRaid = require("./commands/doRaid");
+const doShoutout = require("./commands/doShoutout");
+const doCommissions = require("./commands/doCommissions");
+const doTwit = require("./commands/doTwit");
+const doRequest = require("./commands/doRequest");
+const doTip = require("./commands/doTip");
 const app = require("express")();
 const http = require("http").Server(app);
 const io = require("socket.io")(http, {
@@ -29,10 +36,25 @@ client.on("message", (channel, tags, message, self) => {
   if (message.toLowerCase() === "!feed") {
     io.emit("command", tags.username);
   }
+
+  if (message.startsWith("!so")) {
+    doShoutout(message, client);
+  } else if (message.startsWith("!raid")) {
+    doRaid(message, client);
+  } else if (message.startsWith("!twit")) {
+    doTwit(message, client);
+  } else if (message === "!discord") {
+    doDiscord(client);
+  } else if (message === "!commissions") {
+    doCommissions(client);
+  } else if (message === "!request") {
+    doRequest(client);
+  } else if (message === "!tip") {
+    doTip(client);
+  }
 });
 
-client.on("cheer", (channel, userstate, message) => {
-  if (self) return;
+client.on("cheer", (channel, userstate) => {
   io.emit("cheer", userstate);
 });
 
