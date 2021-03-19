@@ -1,7 +1,6 @@
 require("dotenv").config();
 const tmi = require("tmi.js");
-const express = require("express");
-const app = express();
+const app = require("express")();
 const http = require("http").Server(app);
 const io = require("socket.io")(http, {
   cors: {
@@ -20,21 +19,38 @@ const client = new tmi.Client({
     username: process.env.TWITCH_BOT_USERNAME,
     password: process.env.TWITCH_BOT_AUTH_TOKEN,
   },
-  channels: [`${process.env.TWITCH_CHANNEL_NAME}`],
+  channels: [process.env.TWITCH_CHANNEL_NAME],
 });
 
 client.connect().catch(console.error);
 
 client.on("message", (channel, tags, message, self) => {
   if (self) return;
-  if (message.toLowerCase() === "!hello") {
-    client.say(channel, `@${tags.username}, heya!`);
-    io.emit("command", message);
+  if (message.toLowerCase() === "!feed") {
+    io.emit("command", tags.username);
   }
+});
+
+client.on("cheer", (channel, userstate, message) => {
+  if (self) return;
+  io.emit("cheer", userstate);
 });
 
 io.on("connection", (socket) => {
   console.log("a user connected");
+
+  socket.on("do-thank", (username) => {
+    client.say(
+      `#${process.env.TWITCH_CHANNEL_NAME}`,
+      `Thanks for the food, @${username}!`
+    );
+  });
+  socket.on("dont-thank", (username) => {
+    client.say(
+      `#${process.env.TWITCH_CHANNEL_NAME}`,
+      `You already fed me, @${username}!`
+    );
+  });
 });
 
 app.get("/", (req, res) => {
