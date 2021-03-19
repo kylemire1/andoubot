@@ -33,23 +33,24 @@ client.connect().catch(console.error);
 
 client.on("message", (channel, tags, message, self) => {
   if (self) return;
-  if (message.toLowerCase() === "!feed") {
-    io.emit("command", tags.username);
-  }
 
-  if (message.startsWith("!so")) {
-    doShoutout(message, client);
-  } else if (message.startsWith("!raid")) {
-    doRaid(message, client);
-  } else if (message.startsWith("!twit")) {
-    doTwit(message, client);
-  } else if (message === "!discord") {
+  const msg = message.toLowerCase();
+
+  if (msg === "!feed") {
+    io.emit("command", tags.username);
+  } else if (msg.startsWith("!so")) {
+    doShoutout(msg, client);
+  } else if (msg.startsWith("!raid")) {
+    doRaid(msg, client);
+  } else if (msg.startsWith("!twit")) {
+    doTwit(msg, client);
+  } else if (msg === "!discord") {
     doDiscord(client);
-  } else if (message === "!commissions") {
+  } else if (msg === "!commissions") {
     doCommissions(client);
-  } else if (message === "!request") {
+  } else if (msg === "!request") {
     doRequest(client);
-  } else if (message === "!tip") {
+  } else if (msg === "!tip") {
     doTip(client);
   }
 });
@@ -71,6 +72,24 @@ io.on("connection", (socket) => {
     client.say(
       `#${process.env.TWITCH_CHANNEL_NAME}`,
       `You already fed me, @${username}!`
+    );
+  });
+  socket.on("bits-food", ({ username, bits }) => {
+    client.say(
+      `#${process.env.TWITCH_CHANNEL_NAME}`,
+      `@${username} cheered for ${bits}! Thanks for the food`
+    );
+  });
+  socket.on("bits-no-food", ({ username, bits }) => {
+    client.say(
+      `#${process.env.TWITCH_CHANNEL_NAME}`,
+      `@${username} cheered for ${bits}!`
+    );
+  });
+  socket.on("bits-already-fed", ({ username, bits }) => {
+    client.say(
+      `#${process.env.TWITCH_CHANNEL_NAME}`,
+      `You already fed me bits, @${username}, but I'll take ${bits} more!`
     );
   });
 });
