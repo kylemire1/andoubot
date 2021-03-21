@@ -86,12 +86,6 @@ io.on("connection", (socket) => {
       `@${username} cheered for ${bits}!`
     );
   });
-  socket.on("bits-already-fed", ({ username, bits }) => {
-    client.say(
-      `#${process.env.TWITCH_CHANNEL_NAME}`,
-      `You already fed me bits, @${username}, but I'll take ${bits} more!`
-    );
-  });
 });
 
 app.get("/", (req, res) => {
