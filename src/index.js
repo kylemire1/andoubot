@@ -7,6 +7,7 @@ const doCommissions = require("./commands/doCommissions");
 const doTwit = require("./commands/doTwit");
 const doRequest = require("./commands/doRequest");
 const doTip = require("./commands/doTip");
+const doSubscription = require("./commands/doSubscription");
 const app = require("express")();
 const http = require("http").Server(app);
 const io = require("socket.io")(http, {
@@ -57,6 +58,10 @@ client.on("message", (channel, tags, message, self) => {
 
 client.on("cheer", (channel, userstate) => {
   io.emit("cheer", userstate);
+});
+
+client.on("subscription", (_channel, username) => {
+  doSubscription(username, client);
 });
 
 io.on("connection", (socket) => {
