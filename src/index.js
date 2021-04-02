@@ -20,19 +20,19 @@ client.on("message", (_channel, tags, message, self) => {
 
   if (msg === "!feed") {
     io.emit("command", tags.username);
-  } else if (msg.startsWith("!so") && canUseCommand()) {
+  } else if (msg.startsWith("!so") && canUseCommand(tags)) {
     const username = message.split(" ")[1];
     sayMessage(
       client,
       `GO CHECK OUT @${username} at https://twitch.tv/${username}!`
     );
-  } else if (msg.startsWith("!raid") && canUseCommand()) {
+  } else if (msg.startsWith("!raid") && canUseCommand(tags)) {
     const username = message.split(" ")[1];
     sayMessage(
       client,
       `Heading on over to https://twitch.tv/${username}! Be good my minions!`
     );
-  } else if (msg.startsWith("!twit") && canUseCommand()) {
+  } else if (msg.startsWith("!twit") && canUseCommand(tags)) {
     const username = message.split(" ")[1];
     sayMessage(
       client,
