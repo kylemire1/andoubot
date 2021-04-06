@@ -26,7 +26,11 @@ client.on("message", (_channel, tags, message, self) => {
       client,
       `GO CHECK OUT @${username} at https://twitch.tv/${username}!`
     );
-  } else if (msg.startsWith("!raid") && canUseCommand(tags)) {
+  } else if (
+    msg.startsWith("!raid") &&
+    msg !== "!raiders" &&
+    canUseCommand(tags)
+  ) {
     const username = message.split(" ")[1];
     sayMessage(
       client,
@@ -78,6 +82,27 @@ client.on("message", (_channel, tags, message, self) => {
       tags.username === "ky345")
   ) {
     io.emit("most-love");
+  } else if (msg.toLowerCase() === process.env.FUNNY_COMMAND_1) {
+    sayMessage(client, `nice`);
+  } else if (msg.toLowerCase() === "!gimmemiku") {
+    sayMessage(
+      client,
+      `MikuLegs MikuNya mikuJig mikuParty mikuDance MikuLegs MikuNya mikuJig mikuParty mikuDance MikuLegs MikuNya mikuJig mikuParty mikuDance MikuLegs MikuNya mikuJig mikuParty mikuDance`
+    );
+  } else if (msg.toLowerCase() === process.env.FUNNY_COMMAND_2) {
+    sayMessage(client, process.env.FUNNY_COMMAND_2_OUT);
+  } else if (msg.toLowerCase() === "!lurk") {
+    sayMessage(client, `thanks for stopping by! enjoy lurking~`);
+  } else if (msg.toLowerCase() === "!raiders") {
+    sayMessage(
+      client,
+      `Stream Raiders is a community-based battle game played alongside the stream! It's a fun little game we can all participate in! Go place some units here: https://www.streamraiders.com/game/`
+    );
+  } else if (msg.toLowerCase() === "!kimi") {
+    sayMessage(
+      client,
+      `Go follow my lovely co-host kimispice! https://www.twitch.tv/kimispice`
+    );
   }
 });
 
