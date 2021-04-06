@@ -87,7 +87,7 @@ client.on("message", (_channel, tags, message, self) => {
   } else if (msg.toLowerCase() === "!gimmemiku") {
     sayMessage(
       client,
-      `MikuLegs MikuNya mikuJig mikuParty mikuDance MikuLegs MikuNya mikuJig mikuParty mikuDance MikuLegs MikuNya mikuJig mikuParty mikuDance MikuLegs MikuNya mikuJig mikuParty mikuDance`
+      `MikuLegs MikuNyaa mikuJig mikuParty mikuDance MikuLegs MikuNyaa mikuJig mikuParty mikuDance MikuLegs MikuNyaa mikuJig mikuParty mikuDance MikuLegs MikuNyaa mikuJig mikuParty mikuDance MikuLegs MikuNyaa mikuJig mikuParty mikuDance MikuLegs MikuNyaa mikuJig mikuParty mikuDance MikuLegs MikuNyaa mikuJig mikuParty mikuDance MikuLegs MikuNyaa mikuJig mikuParty mikuDance MikuLegs MikuNyaa mikuJig mikuParty mikuDance MikuLegs MikuNyaa mikuJig mikuParty mikuDance MikuLegs MikuNyaa mikuJig mikuParty mikuDance MikuLegs MikuNyaa mikuJig mikuParty mikuDance`
     );
   } else if (msg.toLowerCase() === process.env.FUNNY_COMMAND_2) {
     sayMessage(client, process.env.FUNNY_COMMAND_2_OUT);
