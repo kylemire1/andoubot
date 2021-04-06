@@ -18,4 +18,4 @@ Uses web sockets to respond to chat interaction in real time. Viewers can use th
 7. **!request** - Outputs the streamer's rules regarding sketch requests.
 8. **!tip** - Outputs a link viewers can use to tip the streamer money.
 9. **!mostlove** - Outputs whoever contributed the most hearts to the Andou tamagotchi during the current stream and congratulates them.
-
++ Many more humorous ones for viewers to figure out
